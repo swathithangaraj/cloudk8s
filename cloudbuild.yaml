@@ -1,40 +1,26 @@
-steps:
-#step 1
+#Build the image
 - name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
-  args: [
-   '-c',
-   'docker pull gcr.io/mypoc-267414/webserver-image:latest || exit 0'
-  ]
-#step 2
-- name: gcr.io/cloud-builders/docker
-  args: [
-   'build',
-   '-t',
-   'gcr.io/mypoc-267414/webserver-image:v1',
-   '-t',
-   'gcr.io/mypoc-267414/webserver-image:v1:latest',
-   '.'
-  ]
-#step 3
+  args: ['build','-t', 'gcr.io/mypoc-267414/webserver-image:v1','-t','gcr.io/mypoc-267414/webserver-image:latest','.']
+#Push the image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push','gcr.io/mypoc-267414/webserver-image:v1']
 - name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'k8s/']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
-#step 4   
+  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1' 
+#update the container image using kubectl set
 - name: 'gcr.io/cloud-builders/kubectl'
-  args: [ 
-   'set', 
-   'image', 
-   'deployment', 
-   'webserver-image',  
-   'webserver-image:v1=gcr.io/mypoc-267414/webserver-image:v1'
-  ] 
-  env: 
-  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
-# push images to Google Container Registry with tags
+  args: [
+           'set',
+           'image',
+           'deployment',
+           'webserver-image',
+           'webserver-image=gcr.io/mypoc-267414/webserver-image:v1'
+        ]
+  env:
+          - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+          - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
 images: [
    'gcr.io/mypoc-267414/webserver-image:v1',
    'gcr.io/mypoc-267414/webserver-image:latest'
