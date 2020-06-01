@@ -4,16 +4,16 @@ steps:
   entrypoint: 'bash'
   args: [
    '-c',
-   'docker pull gcr.io/$PROJECT_ID/webserver-image:latest || exit 0'
+   'docker pull gcr.io/mypoc-267414/webserver-image:latest || exit 0'
   ]
 #step 2
 - name: gcr.io/cloud-builders/docker
   args: [
    'build',
    '-t',
-   'gcr.io/$PROJECT_ID/webserver-image:v1',
+   'gcr.io/mypoc-267414/webserver-image:v1',
    '-t',
-   'gcr.io/$PROJECT_ID/webserver-image:v1:latest',
+   'gcr.io/mypoc-267414/webserver-image:v1:latest',
    '.'
   ]
 #step 3
@@ -29,13 +29,13 @@ steps:
    'image', 
    'deployment', 
    'webserver-image',  
-   'webserver-image:v1=gcr.io/$PROJECT_ID/webserver-image:v1'
+   'webserver-image:v1=gcr.io/mypoc-267414/webserver-image:v1'
   ] 
   env: 
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
   - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
 # push images to Google Container Registry with tags
 images: [
-   'gcr.io/$PROJECT_ID/webserver-image:v1',
-   'gcr.io/$PROJECT_ID/webserver-image:latest'
+   'gcr.io/mypoc-267414/webserver-image:v1',
+   'gcr.io/mypoc-267414/webserver-image:latest'
   ]
