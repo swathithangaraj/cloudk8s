@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: webserver-image
+  name: webserver-image
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: webserver-image
+  template:
+    metadata:
+      labels:
+        run: webserver-image
+    spec:
+      containers:
+      - image: gcr.io/mypoc-267414/webserver-image:latest
+        name: webserver-image
+        ports:
+        - containerPort: 80
