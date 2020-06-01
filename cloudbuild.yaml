@@ -1,3 +1,4 @@
+steps:
 #Build the image
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build','-t', 'gcr.io/mypoc-267414/webserver-image:v1','-t','gcr.io/mypoc-267414/webserver-image:latest','.']
